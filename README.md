@@ -14,7 +14,7 @@ deposit,     1,   3,      2.0
 withdrawal,  1,   4,      1.5
 withdrawal,  2,   5,      3.0
 ```
-### Aavailable Account Operations (type column):
+### Available Account Operations (type column):
 - deposit
 - withdrawal
 - dispute
