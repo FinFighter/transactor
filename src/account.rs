@@ -19,25 +19,21 @@ impl Deposit {
     }
 
     /// Return whether the deposit is disputed.
-    #[inline]
     fn is_disputed(&self) -> bool {
         self.disputed
     }
 
     /// Get the amount of funds this deposit represents.
-    #[inline]
     fn amount(&self) -> u64 {
         self.amount
     }
 
     /// Set the `Deposit` transaction to disputed.
-    #[inline]
     fn dispute(&mut self) {
         self.disputed = true;
     }
 
     /// Set the `Deposit` transaction to resolved.
-    #[inline]
     fn resolve(&mut self) {
         self.disputed = false;
     }
@@ -54,7 +50,6 @@ pub struct Account {
 
 impl Account {
     /// Create a new `Account` with an initial deposit.
-    #[inline]
     pub fn new(tx: u32, available: u64) -> Self {
         let mut deposits = HashMap::new();
         deposits.insert(tx, Deposit::new(available));
@@ -68,32 +63,27 @@ impl Account {
     }
 
     /// Get the available funds.
-    #[inline]
     pub fn available(&self) -> u64 {
         self.available
     }
 
     /// Get the held funds.
-    #[inline]
     pub fn held(&self) -> u64 {
         self.held
     }
 
     /// Get the total funds.
-    #[inline]
     pub fn total(&self) -> u64 {
         self.available + self.held
     }
 
     /// Return whether the account is frozen.
-    #[inline]
     pub fn is_frozen(&self) -> bool {
         self.frozen
     }
 
     /// Deposit funds into the `Account`.
     /// If the account is frozen or there is a duplicate transaction id, the action will not execute.
-    #[inline]
     pub fn deposit(&mut self, tx: u32, amt: u64) -> Result<(), TransactorError> {
         if self.frozen {
             return Err(TransactorError::FrozenAccount);
@@ -110,7 +100,6 @@ impl Account {
 
     /// Withdraw funds from the `Account`.
     /// If the account is frozen or there is a lack of funds, the action will not execute.
-    #[inline]
     pub fn withdraw(&mut self, amt: u64) -> Result<(), TransactorError> {
         if self.frozen {
             return Err(TransactorError::FrozenAccount);
@@ -126,7 +115,6 @@ impl Account {
 
     /// Dispute a previously processed deposit.
     /// If the account is frozen or there is a duplicate transaction id, the action will not execute.
-    #[inline]
     pub fn dispute(&mut self, tx: u32) -> Result<(), TransactorError> {
         if self.frozen {
             return Err(TransactorError::FrozenAccount);
@@ -156,7 +144,6 @@ impl Account {
     /// Resolve a disputed deposit transaction, transfering funds from held to available.
     /// If the account is frozen, there is a duplicate transaction id,
     /// or the transaction is not disputed, the action will not execute.
-    #[inline]
     pub fn resolve(&mut self, tx: u32) -> Result<(), TransactorError> {
         if self.frozen {
             return Err(TransactorError::FrozenAccount);
@@ -182,7 +169,6 @@ impl Account {
     /// Chargeback a disputed transaction removing the funds from the account total and locking the account.
     /// If the account is frozen, there is a duplicate transaction id,
     /// or the transaction is not disputed, the action will not execute.
-    #[inline]
     pub fn chargeback(&mut self, tx: u32) -> Result<(), TransactorError> {
         if self.frozen {
             return Err(TransactorError::FrozenAccount);

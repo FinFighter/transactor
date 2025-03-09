@@ -17,7 +17,6 @@ struct AccountRecord {
 
 /// Represent a u64 as a decimal with a specified precision.
 /// In this case assuming decimal with precision to the ten thousandths place.
-#[inline]
 fn fixed_point_serialize<S>(x: &u64, s: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
@@ -29,7 +28,6 @@ where
 }
 
 impl From<(u16, Account)> for AccountRecord {
-    #[inline]
     fn from((client, acct): (u16, Account)) -> Self {
         AccountRecord {
             client,
@@ -42,7 +40,6 @@ impl From<(u16, Account)> for AccountRecord {
 }
 
 /// For each account record in the `Manager`, serialize and write it to stdout.
-#[inline]
 pub fn unload_data(manager: Manager) -> Result<(), TransactorError> {
     let writer = BufWriter::new(stdout());
     let mut wtr = csv::Writer::from_writer(writer);

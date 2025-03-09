@@ -11,7 +11,6 @@ pub struct Manager {
 }
 
 impl Default for Manager {
-    #[inline]
     fn default() -> Self {
         Manager::new()
     }
@@ -19,7 +18,6 @@ impl Default for Manager {
 
 impl Manager {
     /// Construct a new `Manager`.
-    #[inline]
     pub fn new() -> Self {
         Manager {
             accounts: HashMap::new(),
@@ -27,7 +25,6 @@ impl Manager {
     }
 
     /// Deposit funds into the account specified by the client ID.
-    #[inline]
     pub fn deposit(&mut self, client: u16, tx: u32, amt: u64) -> Result<(), TransactorError> {
         if let Some(acct) = self.accounts.get_mut(&client) {
             acct.deposit(tx, amt)?;
@@ -41,7 +38,6 @@ impl Manager {
     }
 
     /// Withdraw funds from the account specified by the client ID.
-    #[inline]
     pub fn withdraw(&mut self, client: u16, amt: u64) -> Result<(), TransactorError> {
         let account = self
             .accounts
@@ -53,7 +49,6 @@ impl Manager {
     }
 
     /// Dispute a transaction according to the client and transaction ID pair
-    #[inline]
     pub fn dispute(&mut self, client: u16, tx: u32) -> Result<(), TransactorError> {
         let account = self
             .accounts
@@ -66,7 +61,6 @@ impl Manager {
     }
 
     /// Resolve a dispute according to the client and transaction ID pair
-    #[inline]
     pub fn resolve(&mut self, client: u16, tx: u32) -> Result<(), TransactorError> {
         let account = self
             .accounts
@@ -78,7 +72,6 @@ impl Manager {
     }
 
     /// Chargeback a disputed transaction according to the client and transaction ID pair
-    #[inline]
     pub fn chargeback(&mut self, client: u16, tx: u32) -> Result<(), TransactorError> {
         let account = self
             .accounts
@@ -94,7 +87,6 @@ impl IntoIterator for Manager {
     type Item = (u16, Account);
     type IntoIter = IntoIter<u16, Account>;
 
-    #[inline]
     fn into_iter(self) -> Self::IntoIter {
         self.accounts.into_iter()
     }
@@ -104,7 +96,6 @@ impl<'a> IntoIterator for &'a Manager {
     type Item = (&'a u16, &'a Account);
     type IntoIter = Iter<'a, u16, Account>;
 
-    #[inline]
     fn into_iter(self) -> Self::IntoIter {
         self.accounts.iter()
     }
