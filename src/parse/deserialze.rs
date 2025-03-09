@@ -26,9 +26,7 @@ struct TransactionRecord {
 
 impl TransactionRecord {
     /// Consumes the `TransactionRecord` and applies it to the `Manager`.
-    #[inline]
     fn process(self, manager: &mut Manager) -> Result<(), TransactorError> {
-
         // Ignore errors resulting from manager interaction.
         // These errors are soft errors, the effects are ignored.
         // Upon encountering an error, the parsing process is allowed to continue.
@@ -52,7 +50,6 @@ impl TransactionRecord {
 
 /// Deserialize a string that resembles a floating point number into
 /// a u64 scaled to the ten thousandths place.
-#[inline]
 fn quantity_from_str<'de, D>(d: D) -> Result<Option<u64>, D::Error>
 where
     D: Deserializer<'de>,
@@ -72,7 +69,6 @@ where
 }
 
 /// Load and deserialize data from the specified file path.
-#[inline]
 pub fn load_data(file: &str, manager: &mut Manager) -> Result<(), TransactorError> {
     let f = File::open(file)?;
     let reader = BufReader::new(f);
@@ -88,8 +84,8 @@ pub fn load_data(file: &str, manager: &mut Manager) -> Result<(), TransactorErro
 
 #[cfg(test)]
 mod tests {
-    use crate::{manager::Manager, error::TransactorError};
     use super::{Operation, TransactionRecord};
+    use crate::{error::TransactorError, manager::Manager};
 
     const HEADER: &str = "type,client,tx,amount";
 
@@ -128,7 +124,7 @@ mod tests {
         let record = iter.next().expect("No Items").expect("Deserialize Failure");
 
         assert!(matches!(record.operation, Operation::Dispute));
-        assert!(matches!(record.amount, None));
+        assert!(record.amount.is_none());
         assert_eq!(record.client, 1)
     }
 
@@ -154,7 +150,7 @@ mod tests {
         let record = iter.next().expect("No Items").expect("Deserialize Failure");
 
         assert!(matches!(record.operation, Operation::Chargeback));
-        assert!(matches!(record.amount, None));
+        assert!(record.amount.is_none());
         assert_eq!(record.client, 1)
     }
 

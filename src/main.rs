@@ -7,7 +7,6 @@ use manager::Manager;
 use std::env;
 use std::process::ExitCode;
 
-#[inline]
 fn execute(file: &str, mut manager: Manager) -> Result<(), error::TransactorError> {
     parse::load_data(file, &mut manager)?;
     parse::unload_data(manager)?;
